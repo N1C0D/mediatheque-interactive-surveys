@@ -85,6 +85,26 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "start": [
+            "Composer\\Config::disableProcessTimeout",
+            "symfony serve"
+        ],
+        "test:csfixer": "vendor/bin/php-cs-fixer fix --dry-run --diff",
+        "fix:csfixer": "vendor/bin/php-cs-fixer fix",
+        "test:phpstan": "vendor/bin/phpstan analyse",
+        "test:twig": "vendor/bin/twig-cs-fixer lint",
+        "fix:twig": "vendor/bin/twig-cs-fixer fix",
+        "test:yaml": "php bin/console lint:yaml config",
+        "test": [
+            "@test:csfixer",
+            "@test:phpstan",
+            "@test:twig",
+            "@test:yaml"
+        ],
+        "fix": [
+            "@fix:csfixer",
+            "@fix:twig"
         ]
     },
     "conflict": {

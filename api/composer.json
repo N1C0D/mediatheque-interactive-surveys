@@ -107,6 +107,17 @@
             "@fix:twig"
         ]
     },
+    "scripts-descriptions": {
+        "start": "Lance le serveur web interne Symfony via la CLI.",
+        "test:csfixer": "Vérifie le style du code PHP sans le modifier (dry-run).",
+        "fix:csfixer": "Corrige automatiquement le style du code PHP.",
+        "test:phpstan": "Lance l'analyse statique du code PHP avec PHPStan.",
+        "test:twig": "Vérifie le style des templates Twig.",
+        "fix:twig": "Corrige automatiquement le style des templates Twig.",
+        "test:yaml": "Vérifie la syntaxe des fichiers de configuration YAML.",
+        "test": "Lance l'ensemble des tests de qualité de code (PHP, Twig, YAML).",
+        "fix": "Lance l'ensemble des corrections automatiques de style."
+    },
     "conflict": {
         "symfony/symfony": "*"
     },

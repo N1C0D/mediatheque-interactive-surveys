@@ -3,6 +3,7 @@
 namespace App\Factory;
 
 use App\Entity\Participation;
+use Random\RandomException;
 use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
 
 /**
@@ -12,8 +13,6 @@ final class ParticipationFactory extends PersistentObjectFactory
 {
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
-     *
-     * @todo inject services if required
      */
     public function __construct()
     {
@@ -28,15 +27,18 @@ final class ParticipationFactory extends PersistentObjectFactory
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
      *
-     * @todo add your default values here
+     * @throws RandomException
      */
     #[\Override]
     protected function defaults(): array|callable
     {
         return [
-            'isCompleted' => self::faker()->boolean(),
-            'token' => self::faker()->text(64),
-            'updatedAt' => \DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
+            'isCompleted' => self::faker()->boolean(30),
+            'token' => bin2hex(random_bytes(32)),
+            'updatedAt' => \DateTimeImmutable::createFromMutable(
+                self::faker()->dateTimeBetween('-30 days', 'now')
+            ),
+            'currentQuestion' => self::faker()->boolean(70) ? QuestionFactory::new() : null,
         ];
     }
 

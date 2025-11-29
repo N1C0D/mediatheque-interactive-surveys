@@ -12,8 +12,6 @@ final class QuestionFactory extends PersistentObjectFactory
 {
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
-     *
-     * @todo inject services if required
      */
     public function __construct()
     {
@@ -27,14 +25,27 @@ final class QuestionFactory extends PersistentObjectFactory
 
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
-     *
-     * @todo add your default values here
      */
     #[\Override]
     protected function defaults(): array|callable
     {
+        $mediaChoice = self::faker()->randomElement([null, null, 'image', 'image', 'video']);
+
+        $mediaFilename = null;
+        $mediaType = null;
+
+        if ('image' === $mediaChoice) {
+            $mediaFilename = 'placeholder-image.jpg';
+            $mediaType = 'image';
+        } elseif ('video' === $mediaChoice) {
+            $mediaFilename = 'placeholder-video.mp4';
+            $mediaType = 'video';
+        }
+
         return [
-            'content' => self::faker()->text(),
+            'content' => self::faker()->sentence(10).' ?',
+            'mediaFilename' => $mediaFilename,
+            'mediaType' => $mediaType,
         ];
     }
 

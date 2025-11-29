@@ -108,6 +108,12 @@
         "fix": [
             "@fix:csfixer",
             "@fix:twig"
+        ],
+        "db": [
+            "php bin/console doctrine:database:drop --force",
+            "php bin/console doctrine:database:create",
+            "php bin/console doctrine:migrations:migrate --no-interaction",
+            "php bin/console doctrine:fixtures:load --no-interaction"
         ]
     },
     "scripts-descriptions": {
@@ -119,7 +125,8 @@
         "fix:twig": "Corrige automatiquement le style des templates Twig.",
         "test:yaml": "Vérifie la syntaxe des fichiers de configuration YAML.",
         "test": "Lance l'ensemble des tests de qualité de code (PHP, Twig, YAML).",
-        "fix": "Lance l'ensemble des corrections automatiques de style."
+        "fix": "Lance l'ensemble des corrections automatiques de style.",
+        "db": "Réinitialise la base de données et charge les fixtures."
     },
     "conflict": {
         "symfony/symfony": "*"

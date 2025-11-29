@@ -56,6 +56,9 @@ Remarque : exécuter depuis le dossier `api`, par exemple `cd api && composer <c
 - `composer fix`  
   Exécute les corrections automatiques principales (`@fix:csfixer` et `@fix:twig`).
 
+- `composer db:init`  
+  Initialise la base de données (suppression, création, migrations, chargement des fixtures).
+
 ---
 
 ## Exemples rapides

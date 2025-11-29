@@ -12,8 +12,6 @@ final class QuestionnaireFactory extends PersistentObjectFactory
 {
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
-     *
-     * @todo inject services if required
      */
     public function __construct()
     {
@@ -27,14 +25,24 @@ final class QuestionnaireFactory extends PersistentObjectFactory
 
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
-     *
-     * @todo add your default values here
      */
     #[\Override]
     protected function defaults(): array|callable
     {
+        $titles = [
+            'Questionnaire de satisfaction',
+            'Parcours découverte médiathèque',
+            'Quiz culture générale',
+            'Orientation services',
+            'Enquête de fréquentation',
+            'Retour atelier du samedi',
+            'Sondage nouveaux services',
+            'Évaluation animations jeunesse',
+        ];
+
         return [
-            'title' => self::faker()->text(255),
+            'title' => self::faker()->randomElement($titles),
+            'startQuestion' => QuestionFactory::new(),
         ];
     }
 

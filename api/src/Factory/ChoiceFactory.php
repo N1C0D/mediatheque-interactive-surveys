@@ -12,8 +12,6 @@ final class ChoiceFactory extends PersistentObjectFactory
 {
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
-     *
-     * @todo inject services if required
      */
     public function __construct()
     {
@@ -27,15 +25,28 @@ final class ChoiceFactory extends PersistentObjectFactory
 
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
-     *
-     * @todo add your default values here
      */
     #[\Override]
     protected function defaults(): array|callable
     {
+        $labels = [
+            'Oui',
+            'Non',
+            'Peut-être',
+            'Très satisfait',
+            'Satisfait',
+            'Peu satisfait',
+            'Pas satisfait',
+            'Moins de 18 ans',
+            '18 ans et plus',
+            'Continuer',
+            'Passer',
+        ];
+
         return [
-            'label' => self::faker()->text(255),
+            'label' => self::faker()->randomElement($labels),
             'question' => QuestionFactory::new(),
+            'targetQuestion' => null,
         ];
     }
 

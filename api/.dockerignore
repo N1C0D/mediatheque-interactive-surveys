@@ -1,0 +1,5 @@
+var/
+vendor/
+*.log
+.env.local
+.env.*.local

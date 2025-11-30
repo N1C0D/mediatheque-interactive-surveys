@@ -2,31 +2,53 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use App\Repository\ParticipationAnswerRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ParticipationAnswerRepository::class)]
-#[ORM\UniqueConstraint(name: 'unique_participation_question', columns: ['participation_id', 'question_id'])]
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            security: "is_granted('ROLE_ADMIN')"
+        ),
+        new Get(
+            security: "is_granted('ROLE_ADMIN')"
+        ),
+        new Post(),
+    ],
+    normalizationContext: ['groups' => ['participationAnswer:read']],
+    denormalizationContext: ['groups' => ['participationAnswer:write']],
+)]
 class ParticipationAnswer
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['participationAnswer:read', 'participation:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'answers')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['participationAnswer:read', 'participationAnswer:write'])]
     private ?Participation $participation = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[Groups(['participationAnswer:read', 'participationAnswer:write', 'participation:read'])]
     private ?Choice $choice = null;
 
     #[ORM\Column]
+    #[Groups(['participationAnswer:read', 'participation:read'])]
     private ?\DateTimeImmutable $answeredAt = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['participationAnswer:read', 'participationAnswer:write', 'participation:read'])]
     private ?Question $question = null;
 
     public function getId(): ?int

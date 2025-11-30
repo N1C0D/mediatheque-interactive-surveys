@@ -42,7 +42,9 @@ final class QuestionnaireFactory extends PersistentObjectFactory
 
         return [
             'title' => self::faker()->randomElement($titles),
-            'startQuestion' => QuestionFactory::new(),
+            'description' => self::faker()->optional(0.7)->paragraph(),
+            'createdAt' => \DateTimeImmutable::createFromMutable(self::faker()->dateTimeBetween('-1 year', 'now')),
+            'startQuestion' => null,
         ];
     }
 

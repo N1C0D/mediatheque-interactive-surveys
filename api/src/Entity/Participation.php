@@ -33,6 +33,10 @@ class Participation
     #[ORM\OneToMany(targetEntity: ParticipationAnswer::class, mappedBy: 'participation', orphanRemoval: true)]
     private Collection $answers;
 
+    #[ORM\ManyToOne(inversedBy: 'participations')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Questionnaire $questionnaire = null;
+
     public function __construct()
     {
         $this->answers = new ArrayCollection();
@@ -117,6 +121,18 @@ class Participation
                 $answer->setParticipation(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getQuestionnaire(): ?Questionnaire
+    {
+        return $this->questionnaire;
+    }
+
+    public function setQuestionnaire(?Questionnaire $questionnaire): static
+    {
+        $this->questionnaire = $questionnaire;
 
         return $this;
     }

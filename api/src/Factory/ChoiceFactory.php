@@ -45,7 +45,7 @@ final class ChoiceFactory extends PersistentObjectFactory
 
         return [
             'label' => self::faker()->randomElement($labels),
-            'question' => QuestionFactory::new(),
+            'question' => null,
             'targetQuestion' => null,
         ];
     }

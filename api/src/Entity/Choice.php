@@ -21,6 +21,7 @@ class Choice
     private ?Question $question = null;
 
     #[ORM\ManyToOne]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     private ?Question $targetQuestion = null;
 
     public function getId(): ?int

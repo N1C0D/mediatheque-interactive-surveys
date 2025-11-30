@@ -1,0 +1,18 @@
+# ===========================================
+# Caddy Configuration - Development
+# ===========================================
+
+# Frontend - Next.js Application
+app.localhost {
+    reverse_proxy frontend:3000
+}
+
+# Backend - Symfony API
+api.localhost {
+    reverse_proxy api:80
+}
+
+# Adminer - Database Admin
+adminer.localhost {
+    reverse_proxy adminer:8080
+}

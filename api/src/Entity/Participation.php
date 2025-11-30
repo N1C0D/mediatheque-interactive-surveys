@@ -2,6 +2,11 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
@@ -34,6 +39,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
     normalizationContext: ['groups' => ['participation:read']],
     denormalizationContext: ['groups' => ['participation:write']],
 )]
+#[ApiFilter(SearchFilter::class, properties: ['token' => 'exact', 'questionnaire' => 'exact', 'respondent' => 'exact'])]
+#[ApiFilter(BooleanFilter::class, properties: ['isCompleted'])]
+#[ApiFilter(DateFilter::class, properties: ['updatedAt'])]
+#[ApiFilter(OrderFilter::class, properties: ['updatedAt', 'id'], arguments: ['orderParameterName' => 'order'])]
 class Participation
 {
     #[ORM\Id]

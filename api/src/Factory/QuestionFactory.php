@@ -46,6 +46,7 @@ final class QuestionFactory extends PersistentObjectFactory
             'content' => self::faker()->sentence(10).' ?',
             'mediaFilename' => $mediaFilename,
             'mediaType' => $mediaType,
+            'questionnaire' => null,
         ];
     }
 

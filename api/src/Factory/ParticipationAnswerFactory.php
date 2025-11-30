@@ -30,9 +30,10 @@ final class ParticipationAnswerFactory extends PersistentObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'answeredAt' => \DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
-            'choice' => ChoiceFactory::new(),
-            'participation' => ParticipationFactory::new(),
+            'answeredAt' => \DateTimeImmutable::createFromMutable(self::faker()->dateTimeBetween('-30 days', 'now')),
+            'choice' => null,
+            'participation' => null,
+            'question' => null,
         ];
     }
 

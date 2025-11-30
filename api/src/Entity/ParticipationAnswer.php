@@ -2,6 +2,10 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
@@ -24,6 +28,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
     normalizationContext: ['groups' => ['participationAnswer:read']],
     denormalizationContext: ['groups' => ['participationAnswer:write']],
 )]
+#[ApiFilter(SearchFilter::class, properties: ['participation' => 'exact', 'question' => 'exact', 'choice' => 'exact'])]
+#[ApiFilter(DateFilter::class, properties: ['answeredAt'])]
+#[ApiFilter(OrderFilter::class, properties: ['answeredAt', 'id'], arguments: ['orderParameterName' => 'order'])]
 class ParticipationAnswer
 {
     #[ORM\Id]

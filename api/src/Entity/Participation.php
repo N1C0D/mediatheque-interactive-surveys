@@ -25,6 +25,7 @@ class Participation
     private ?bool $isCompleted = null;
 
     #[ORM\ManyToOne]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     private ?Question $currentQuestion = null;
 
     /**

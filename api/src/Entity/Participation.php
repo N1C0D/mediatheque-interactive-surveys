@@ -15,7 +15,7 @@ class Participation
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 64)]
+    #[ORM\Column(length: 64, unique: true)]
     private ?string $token = null;
 
     #[ORM\Column]

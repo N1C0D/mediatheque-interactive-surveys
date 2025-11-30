@@ -2,25 +2,48 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\QuestionnaireRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: QuestionnaireRepository::class)]
+#[ApiResource(
+    operations: [
+        new GetCollection(),
+        new Get(),
+        new Post(security: "is_granted('ROLE_ADMIN')"),
+        new Put(security: "is_granted('ROLE_ADMIN')"),
+        new Patch(security: "is_granted('ROLE_ADMIN')"),
+        new Delete(security: "is_granted('ROLE_ADMIN')"),
+    ],
+    normalizationContext: ['groups' => ['questionnaire:read']],
+    denormalizationContext: ['groups' => ['questionnaire:write']],
+)]
 class Questionnaire
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['questionnaire:read', 'question:read', 'participation:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['questionnaire:read', 'questionnaire:write', 'participation:read'])]
     private ?string $title = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[Groups(['questionnaire:read', 'questionnaire:write'])]
     private ?Question $startQuestion = null;
 
     /**
@@ -33,12 +56,15 @@ class Questionnaire
      * @var Collection<int, Question>
      */
     #[ORM\OneToMany(targetEntity: Question::class, mappedBy: 'questionnaire', orphanRemoval: true)]
+    #[Groups(['questionnaire:read'])]
     private Collection $questions;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['questionnaire:read', 'questionnaire:write'])]
     private ?string $description = null;
 
     #[ORM\Column]
+    #[Groups(['questionnaire:read'])]
     private ?\DateTimeImmutable $createdAt = null;
 
     public function __construct()

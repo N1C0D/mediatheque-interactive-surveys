@@ -1,0 +1,19 @@
+# Caddyfile for Symfony API
+:80 {
+    root * /app/public
+
+    # Encode responses with gzip
+    encode gzip
+
+    # Handle PHP files with PHP-FPM
+    php_fastcgi 127.0.0.1:9000
+
+    # Serve static files
+    file_server
+
+    # Logging
+    log {
+        output stdout
+        format console
+    }
+}

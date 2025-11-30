@@ -31,6 +31,10 @@ class Question
     #[ORM\OneToMany(targetEntity: Choice::class, mappedBy: 'question', orphanRemoval: true)]
     private Collection $choices;
 
+    #[ORM\ManyToOne(inversedBy: 'questions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Questionnaire $questionnaire = null;
+
     public function __construct()
     {
         $this->choices = new ArrayCollection();
@@ -103,6 +107,18 @@ class Question
                 $choice->setQuestion(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getQuestionnaire(): ?Questionnaire
+    {
+        return $this->questionnaire;
+    }
+
+    public function setQuestionnaire(?Questionnaire $questionnaire): static
+    {
+        $this->questionnaire = $questionnaire;
 
         return $this;
     }

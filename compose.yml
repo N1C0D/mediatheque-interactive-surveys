@@ -1,0 +1,111 @@
+services:
+  # ===========================================
+  # Reverse Proxy - Caddy (HTTPS local)
+  # ===========================================
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "${HTTP_PORT:-8080}:80"
+      - "${HTTPS_PORT:-8443}:443"
+      - "${HTTPS_PORT:-8443}:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - frontend
+      - api
+    networks:
+      - app-network
+
+  # ===========================================
+  # Frontend - Next.js (React + TypeScript)
+  # ===========================================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: development
+    restart: unless-stopped
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-https://api.localhost}
+      - WATCHPACK_POLLING=true
+    networks:
+      - app-network
+    depends_on:
+      - api
+
+  # ===========================================
+  # Backend - Symfony API Platform
+  # ===========================================
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+      target: development
+    restart: unless-stopped
+    volumes:
+      - ./api:/app
+      - /app/var
+      - /app/vendor
+    environment:
+      - APP_ENV=${APP_ENV:-dev}
+      - APP_SECRET=${APP_SECRET:-change_me_in_production}
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-!ChangeMe!}@database:5432/${POSTGRES_DB:-app}?serverVersion=16&charset=utf8
+      - CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN:-^https?://(localhost|127\.0\.0\.1|app\.localhost)(:[0-9]+)?$}
+      - MESSENGER_TRANSPORT_DSN=${MESSENGER_TRANSPORT_DSN:-doctrine://default?auto_setup=0}
+    networks:
+      - app-network
+    depends_on:
+      database:
+        condition: service_healthy
+
+  # ===========================================
+  # Database - PostgreSQL
+  # ===========================================
+  database:
+    image: postgres:${POSTGRES_VERSION:-16}-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-app}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
+      POSTGRES_USER: ${POSTGRES_USER:-app}
+    healthcheck:
+      test: ["CMD", "pg_isready", "-d", "${POSTGRES_DB:-app}", "-U", "${POSTGRES_USER:-app}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    volumes:
+      - database_data:/var/lib/postgresql/data:rw
+    networks:
+      - app-network
+
+  # ===========================================
+  # Database Admin - Adminer (Dev only)
+  # ===========================================
+  adminer:
+    image: adminer:latest
+    restart: unless-stopped
+    environment:
+      ADMINER_DEFAULT_SERVER: database
+      ADMINER_DESIGN: nette
+    networks:
+      - app-network
+    depends_on:
+      - database
+
+volumes:
+  caddy_data:
+  caddy_config:
+  database_data:
+
+networks:
+  app-network:
+    driver: bridge

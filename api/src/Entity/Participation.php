@@ -37,6 +37,9 @@ class Participation
     #[ORM\JoinColumn(nullable: false)]
     private ?Questionnaire $questionnaire = null;
 
+    #[ORM\ManyToOne(inversedBy: 'participations')]
+    private ?User $respondent = null;
+
     public function __construct()
     {
         $this->answers = new ArrayCollection();
@@ -133,6 +136,18 @@ class Participation
     public function setQuestionnaire(?Questionnaire $questionnaire): static
     {
         $this->questionnaire = $questionnaire;
+
+        return $this;
+    }
+
+    public function getRespondent(): ?User
+    {
+        return $this->respondent;
+    }
+
+    public function setRespondent(?User $respondent): static
+    {
+        $this->respondent = $respondent;
 
         return $this;
     }

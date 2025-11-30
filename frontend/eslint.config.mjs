@@ -13,6 +13,17 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+    {
+        "extends": [
+            "next/core-web-vitals",
+            "plugin:prettier/recommended"
+        ],
+        "rules": {
+            "prettier/prettier": "error",
+            "react/no-unescaped-entities": "off",
+            "@next/next/no-img-element": "off"
+        }
+    }
 ]);
 
 export default eslintConfig;

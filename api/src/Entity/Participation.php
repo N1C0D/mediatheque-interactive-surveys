@@ -2,43 +2,77 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use App\Repository\ParticipationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ParticipationRepository::class)]
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            security: "is_granted('ROLE_USER') or is_granted('ROLE_ADMIN')"
+        ),
+        new Get(
+            security: "is_granted('ROLE_ADMIN') or (is_granted('ROLE_USER') and object.getUser() == user) or object.getSessionId() == null"
+        ),
+        new Post(),
+        new Patch(
+            security: "is_granted('ROLE_ADMIN') or (is_granted('ROLE_USER') and object.getUser() == user) or object.getSessionId() == null"
+        ),
+        new Delete(
+            security: "is_granted('ROLE_ADMIN') or (is_granted('ROLE_USER') and object.getUser() == user)"
+        ),
+    ],
+    normalizationContext: ['groups' => ['participation:read']],
+    denormalizationContext: ['groups' => ['participation:write']],
+)]
 class Participation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['participation:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 64, unique: true)]
+    #[Groups(['participation:read'])]
     private ?string $token = null;
 
     #[ORM\Column]
+    #[Groups(['participation:read'])]
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column]
+    #[Groups(['participation:read', 'participation:write'])]
     private ?bool $isCompleted = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[Groups(['participation:read', 'participation:write'])]
     private ?Question $currentQuestion = null;
 
     /**
      * @var Collection<int, ParticipationAnswer>
      */
     #[ORM\OneToMany(targetEntity: ParticipationAnswer::class, mappedBy: 'participation', orphanRemoval: true)]
+    #[Groups(['participation:read'])]
     private Collection $answers;
 
     #[ORM\ManyToOne(inversedBy: 'participations')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['participation:read', 'participation:write'])]
     private ?Questionnaire $questionnaire = null;
 
     #[ORM\ManyToOne(inversedBy: 'participations')]
+    #[Groups(['participation:read'])]
     private ?User $respondent = null;
 
     public function __construct()

@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
@@ -26,6 +29,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
     normalizationContext: ['groups' => ['choice:read']],
     denormalizationContext: ['groups' => ['choice:write']],
 )]
+#[ApiFilter(SearchFilter::class, properties: ['label' => 'partial', 'question' => 'exact', 'targetQuestion' => 'exact'])]
+#[ApiFilter(OrderFilter::class, properties: ['id', 'label'], arguments: ['orderParameterName' => 'order'])]
 class Choice
 {
     #[ORM\Id]

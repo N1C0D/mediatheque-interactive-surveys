@@ -6,6 +6,7 @@ use App\Repository\ParticipationAnswerRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ParticipationAnswerRepository::class)]
+#[ORM\UniqueConstraint(name: 'unique_participation_question', columns: ['participation_id', 'question_id'])]
 class ParticipationAnswer
 {
     #[ORM\Id]
@@ -18,11 +19,15 @@ class ParticipationAnswer
     private ?Participation $participation = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?Choice $choice = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $answeredAt = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Question $question = null;
 
     public function getId(): ?int
     {
@@ -61,6 +66,18 @@ class ParticipationAnswer
     public function setAnsweredAt(\DateTimeImmutable $answeredAt): static
     {
         $this->answeredAt = $answeredAt;
+
+        return $this;
+    }
+
+    public function getQuestion(): ?Question
+    {
+        return $this->question;
+    }
+
+    public function setQuestion(?Question $question): static
+    {
+        $this->question = $question;
 
         return $this;
     }

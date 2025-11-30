@@ -38,7 +38,9 @@ final class ParticipationFactory extends PersistentObjectFactory
             'updatedAt' => \DateTimeImmutable::createFromMutable(
                 self::faker()->dateTimeBetween('-30 days', 'now')
             ),
-            'currentQuestion' => self::faker()->boolean(70) ? QuestionFactory::new() : null,
+            'currentQuestion' => null,
+            'questionnaire' => null,
+            'respondent' => null,
         ];
     }
 

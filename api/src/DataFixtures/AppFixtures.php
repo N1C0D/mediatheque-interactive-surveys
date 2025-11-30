@@ -7,11 +7,16 @@ use App\Factory\ParticipationAnswerFactory;
 use App\Factory\ParticipationFactory;
 use App\Factory\QuestionFactory;
 use App\Factory\QuestionnaireFactory;
+use App\Factory\UserFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Random\RandomException;
 
 class AppFixtures extends Fixture
 {
+    /**
+     * @throws RandomException
+     */
     public function load(ObjectManager $manager): void
     {
         $this->createDiscoveryQuestionnaire();
@@ -19,6 +24,8 @@ class AppFixtures extends Fixture
         $this->createCultureQuizQuestionnaire();
         $this->createServiceOrientationQuestionnaire();
         $this->createSampleParticipations();
+        $this->createUsers();
+        $this->createUserParticipations();
     }
 
     /**
@@ -26,38 +33,49 @@ class AppFixtures extends Fixture
      */
     private function createDiscoveryQuestionnaire(): void
     {
+        $questionnaire = QuestionnaireFactory::createOne([
+            'title' => 'Parcours Découverte Médiathèque',
+            'startQuestion' => null,
+        ]);
+
         $endJeuneA = QuestionFactory::createOne([
             'content' => 'Super ! Rejoignez notre club de lecture "Junior" le mercredi à 14h. Inscription à l\'accueil.',
             'mediaFilename' => 'placeholder-image.jpg',
             'mediaType' => 'image',
+            'questionnaire' => $questionnaire,
         ]);
 
         $endJeuneB = QuestionFactory::createOne([
             'content' => 'Pas de souci ! Découvrez notre ludothèque jeux vidéo au 2ème étage, ouverte tous les jours.',
             'mediaFilename' => 'placeholder-image.jpg',
             'mediaType' => 'image',
+            'questionnaire' => $questionnaire,
         ]);
 
         $endAdulteA = QuestionFactory::createOne([
             'content' => 'Nous avons un atelier CV tous les mardis matin de 9h à 12h. Rendez-vous au service emploi.',
             'mediaFilename' => 'placeholder-video.mp4',
             'mediaType' => 'video',
+            'questionnaire' => $questionnaire,
         ]);
 
         $endAdulteB = QuestionFactory::createOne([
             'content' => 'Consultez notre catalogue de romans policiers, section C au 1er étage. Bonne lecture !',
+            'questionnaire' => $questionnaire,
         ]);
 
         $endAdulteC = QuestionFactory::createOne([
             'content' => 'Découvrez nos ressources numériques gratuites : journaux, magazines, formations en ligne.',
             'mediaFilename' => 'placeholder-image.jpg',
             'mediaType' => 'image',
+            'questionnaire' => $questionnaire,
         ]);
 
         $qJeune = QuestionFactory::createOne([
             'content' => 'Aimes-tu lire des livres ?',
             'mediaFilename' => 'placeholder-image.jpg',
             'mediaType' => 'image',
+            'questionnaire' => $questionnaire,
         ]);
 
         ChoiceFactory::createOne([
@@ -73,6 +91,7 @@ class AppFixtures extends Fixture
 
         $qAdulte = QuestionFactory::createOne([
             'content' => 'Que recherchez-vous aujourd\'hui ?',
+            'questionnaire' => $questionnaire,
         ]);
 
         ChoiceFactory::createOne([
@@ -95,6 +114,7 @@ class AppFixtures extends Fixture
             'content' => 'Bonjour ! Pour commencer, quel est votre âge ?',
             'mediaFilename' => 'placeholder-video.mp4',
             'mediaType' => 'video',
+            'questionnaire' => $questionnaire,
         ]);
 
         ChoiceFactory::createOne([
@@ -108,10 +128,7 @@ class AppFixtures extends Fixture
             'targetQuestion' => $qAdulte,
         ]);
 
-        QuestionnaireFactory::createOne([
-            'title' => 'Parcours Découverte Médiathèque',
-            'startQuestion' => $qStart,
-        ]);
+        $questionnaire->setStartQuestion($qStart);
     }
 
     /**
@@ -119,26 +136,36 @@ class AppFixtures extends Fixture
      */
     private function createSatisfactionQuestionnaire(): void
     {
+        $questionnaire = QuestionnaireFactory::createOne([
+            'title' => 'Satisfaction Atelier du Samedi',
+            'startQuestion' => null,
+        ]);
+
         $endTresSatisfait = QuestionFactory::createOne([
             'content' => 'Merci beaucoup ! Nous sommes ravis que vous soyez satisfait. À bientôt !',
             'mediaFilename' => 'placeholder-image.jpg',
             'mediaType' => 'image',
+            'questionnaire' => $questionnaire,
         ]);
 
         $endPeuSatisfait = QuestionFactory::createOne([
             'content' => 'Merci pour votre retour. Nous allons prendre en compte vos remarques pour nous améliorer.',
+            'questionnaire' => $questionnaire,
         ]);
 
         $endRecommandation = QuestionFactory::createOne([
             'content' => 'Merci de nous recommander ! N\'hésitez pas à partager vos bons moments avec vos proches.',
+            'questionnaire' => $questionnaire,
         ]);
 
         $endPasRecommandation = QuestionFactory::createOne([
             'content' => 'Nous sommes désolés. Vos commentaires sont précieux pour progresser. Merci.',
+            'questionnaire' => $questionnaire,
         ]);
 
         $qRecommandation = QuestionFactory::createOne([
             'content' => 'Recommanderiez-vous notre médiathèque à vos proches ?',
+            'questionnaire' => $questionnaire,
         ]);
 
         ChoiceFactory::createOne([
@@ -156,6 +183,7 @@ class AppFixtures extends Fixture
             'content' => 'Comment évaluez-vous votre visite aujourd\'hui ?',
             'mediaFilename' => 'placeholder-image.jpg',
             'mediaType' => 'image',
+            'questionnaire' => $questionnaire,
         ]);
 
         ChoiceFactory::createOne([
@@ -179,10 +207,7 @@ class AppFixtures extends Fixture
             'targetQuestion' => $endPeuSatisfait,
         ]);
 
-        QuestionnaireFactory::createOne([
-            'title' => 'Satisfaction Atelier du Samedi',
-            'startQuestion' => $qSatisfaction,
-        ]);
+        $questionnaire->setStartQuestion($qSatisfaction);
     }
 
     /**
@@ -190,26 +215,35 @@ class AppFixtures extends Fixture
      */
     private function createCultureQuizQuestionnaire(): void
     {
+        $questionnaire = QuestionnaireFactory::createOne([
+            'title' => 'Quiz Culture Générale',
+            'startQuestion' => null,
+        ]);
+
         $endBravo = QuestionFactory::createOne([
             'content' => 'Bravo ! Vous êtes un expert ! Découvrez notre section Histoire au 1er étage.',
             'mediaFilename' => 'placeholder-video.mp4',
             'mediaType' => 'video',
+            'questionnaire' => $questionnaire,
         ]);
 
         $endBienJoue = QuestionFactory::createOne([
             'content' => 'Bien joué ! Continuez à explorer notre médiathèque pour en apprendre davantage.',
+            'questionnaire' => $questionnaire,
         ]);
 
         $endDommage = QuestionFactory::createOne([
             'content' => 'Dommage ! Mais ne vous découragez pas, nous avons plein de livres pour apprendre.',
             'mediaFilename' => 'placeholder-image.jpg',
             'mediaType' => 'image',
+            'questionnaire' => $questionnaire,
         ]);
 
         $qCulture2 = QuestionFactory::createOne([
             'content' => 'En quelle année a eu lieu la Révolution française ?',
             'mediaFilename' => 'placeholder-image.jpg',
             'mediaType' => 'image',
+            'questionnaire' => $questionnaire,
         ]);
 
         ChoiceFactory::createOne([
@@ -232,6 +266,7 @@ class AppFixtures extends Fixture
             'content' => 'Qui a écrit "Les Misérables" ?',
             'mediaFilename' => 'placeholder-video.mp4',
             'mediaType' => 'video',
+            'questionnaire' => $questionnaire,
         ]);
 
         ChoiceFactory::createOne([
@@ -250,10 +285,7 @@ class AppFixtures extends Fixture
             'targetQuestion' => $endDommage,
         ]);
 
-        QuestionnaireFactory::createOne([
-            'title' => 'Quiz Culture Générale',
-            'startQuestion' => $qCulture1,
-        ]);
+        $questionnaire->setStartQuestion($qCulture1);
     }
 
     /**
@@ -261,34 +293,45 @@ class AppFixtures extends Fixture
      */
     private function createServiceOrientationQuestionnaire(): void
     {
+        $questionnaire = QuestionnaireFactory::createOne([
+            'title' => 'Orientation Services - Trouvez votre espace',
+            'startQuestion' => null,
+        ]);
+
         $endEspaceEnfant = QuestionFactory::createOne([
             'content' => 'Direction l\'espace enfants ! Rez-de-chaussée, à gauche après l\'entrée.',
             'mediaFilename' => 'placeholder-image.jpg',
             'mediaType' => 'image',
+            'questionnaire' => $questionnaire,
         ]);
 
         $endEspaceAdo = QuestionFactory::createOne([
             'content' => 'Rendez-vous à l\'espace ados, 1er étage. Mangas, BD, et bien plus !',
             'mediaFilename' => 'placeholder-image.jpg',
             'mediaType' => 'image',
+            'questionnaire' => $questionnaire,
         ]);
 
         $endBibliotheque = QuestionFactory::createOne([
             'content' => 'Bienvenue à la bibliothèque générale, 2ème étage. Silence demandé.',
+            'questionnaire' => $questionnaire,
         ]);
 
         $endMultimedia = QuestionFactory::createOne([
             'content' => 'L\'espace multimédia vous attend ! Ordinateurs, tablettes, impression disponibles.',
             'mediaFilename' => 'placeholder-video.mp4',
             'mediaType' => 'video',
+            'questionnaire' => $questionnaire,
         ]);
 
         $endEspaceCoworking = QuestionFactory::createOne([
             'content' => 'Notre espace coworking est au 3ème étage. WiFi haut débit et prises disponibles.',
+            'questionnaire' => $questionnaire,
         ]);
 
         $qActiviteAdulte = QuestionFactory::createOne([
             'content' => 'Quel type d\'activité vous intéresse ?',
+            'questionnaire' => $questionnaire,
         ]);
 
         ChoiceFactory::createOne([
@@ -309,6 +352,7 @@ class AppFixtures extends Fixture
 
         $qActiviteJeune = QuestionFactory::createOne([
             'content' => 'Tu as quel âge exactement ?',
+            'questionnaire' => $questionnaire,
         ]);
 
         ChoiceFactory::createOne([
@@ -326,6 +370,7 @@ class AppFixtures extends Fixture
             'content' => 'Bienvenue ! Vous cherchez un espace pour...',
             'mediaFilename' => 'placeholder-image.jpg',
             'mediaType' => 'image',
+            'questionnaire' => $questionnaire,
         ]);
 
         ChoiceFactory::createOne([
@@ -339,14 +384,13 @@ class AppFixtures extends Fixture
             'targetQuestion' => $qActiviteAdulte,
         ]);
 
-        QuestionnaireFactory::createOne([
-            'title' => 'Orientation Services - Trouvez votre espace',
-            'startQuestion' => $qServiceStart,
-        ]);
+        $questionnaire->setStartQuestion($qServiceStart);
     }
 
     /**
      * Crée des exemples de participations (en cours, complétées).
+     *
+     * @throws RandomException
      */
     private function createSampleParticipations(): void
     {
@@ -361,12 +405,14 @@ class AppFixtures extends Fixture
             'isCompleted' => true,
             'currentQuestion' => null,
             'updatedAt' => $baseDate->modify('+5 minutes'),
+            'questionnaire' => $questionnaire,
         ]);
 
         $choice1 = $startQuestion->getChoices()->first();
         ParticipationAnswerFactory::createOne([
             'participation' => $completedParticipation,
             'choice' => $choice1,
+            'question' => $startQuestion,
             'answeredAt' => $baseDate,
         ]);
 
@@ -375,6 +421,7 @@ class AppFixtures extends Fixture
             ParticipationAnswerFactory::createOne([
                 'participation' => $completedParticipation,
                 'choice' => $choice2,
+                'question' => $secondQuestion,
                 'answeredAt' => $baseDate->modify('+2 minutes'),
             ]);
 
@@ -384,6 +431,7 @@ class AppFixtures extends Fixture
                 ParticipationAnswerFactory::createOne([
                     'participation' => $completedParticipation,
                     'choice' => $choice3,
+                    'question' => $thirdQuestion,
                     'answeredAt' => $baseDate->modify('+4 minutes'),
                 ]);
             }
@@ -396,11 +444,13 @@ class AppFixtures extends Fixture
             'isCompleted' => false,
             'currentQuestion' => $secondQuestion,
             'updatedAt' => $inProgressDate->modify('+1 minute'),
+            'questionnaire' => $questionnaire,
         ]);
 
         ParticipationAnswerFactory::createOne([
             'participation' => $inProgressParticipation,
             'choice' => $choice1,
+            'question' => $startQuestion,
             'answeredAt' => $inProgressDate,
         ]);
 
@@ -409,6 +459,149 @@ class AppFixtures extends Fixture
             'isCompleted' => false,
             'currentQuestion' => $startQuestion,
             'updatedAt' => new \DateTimeImmutable('-5 minutes'),
+            'questionnaire' => $questionnaire,
+        ]);
+    }
+
+    /**
+     * Crée des utilisateurs de test.
+     */
+    private function createUsers(): void
+    {
+        UserFactory::createOne([
+            'email' => 'jean.dupont@example.com',
+            'password' => password_hash('password', PASSWORD_BCRYPT),
+            'roles' => ['ROLE_USER'],
+        ]);
+
+        UserFactory::createOne([
+            'email' => 'marie.martin@example.com',
+            'password' => password_hash('password', PASSWORD_BCRYPT),
+            'roles' => ['ROLE_USER'],
+        ]);
+
+        UserFactory::createOne([
+            'email' => 'admin@example.com',
+            'password' => password_hash('admin', PASSWORD_BCRYPT),
+            'roles' => ['ROLE_ADMIN'],
+        ]);
+
+        UserFactory::createMany(3);
+    }
+
+    /**
+     * Crée des participations associées à des utilisateurs.
+     *
+     * @throws RandomException
+     */
+    private function createUserParticipations(): void
+    {
+        $userJean = UserFactory::repository()->findOneBy(['email' => 'jean.dupont@example.com']);
+        $userMarie = UserFactory::repository()->findOneBy(['email' => 'marie.martin@example.com']);
+
+        $quizQuestionnaire = QuestionnaireFactory::repository()->findOneBy(['title' => 'Quiz Culture Générale']);
+        $satisfactionQuestionnaire = QuestionnaireFactory::repository()->findOneBy(['title' => 'Satisfaction Atelier du Samedi']);
+        $discoveryQuestionnaire = QuestionnaireFactory::repository()->findOneBy(['title' => 'Parcours Découverte Médiathèque']);
+
+        $quizStartQuestion = $quizQuestionnaire->getStartQuestion();
+        $jeanQuizDate = new \DateTimeImmutable('-3 days 14:00:00');
+
+        $jeanQuizParticipation = ParticipationFactory::createOne([
+            'token' => bin2hex(random_bytes(32)),
+            'isCompleted' => true,
+            'currentQuestion' => null,
+            'updatedAt' => $jeanQuizDate->modify('+4 minutes'),
+            'questionnaire' => $quizQuestionnaire,
+            'respondent' => $userJean,
+        ]);
+
+        $quizChoice1 = $quizStartQuestion->getChoices()->filter(
+            fn ($choice) => 'Victor Hugo' === $choice->getLabel()
+        )->first();
+
+        ParticipationAnswerFactory::createOne([
+            'participation' => $jeanQuizParticipation,
+            'choice' => $quizChoice1,
+            'question' => $quizStartQuestion,
+            'answeredAt' => $jeanQuizDate,
+        ]);
+
+        $quizQuestion2 = $quizChoice1->getTargetQuestion();
+        if ($quizQuestion2) {
+            $quizChoice2 = $quizQuestion2->getChoices()->filter(
+                fn ($choice) => '1789' === $choice->getLabel()
+            )->first();
+
+            if ($quizChoice2) {
+                ParticipationAnswerFactory::createOne([
+                    'participation' => $jeanQuizParticipation,
+                    'choice' => $quizChoice2,
+                    'question' => $quizQuestion2,
+                    'answeredAt' => $jeanQuizDate->modify('+2 minutes'),
+                ]);
+            }
+        }
+
+        $satisfactionStartQuestion = $satisfactionQuestionnaire->getStartQuestion();
+        $marieSatisfactionDate = new \DateTimeImmutable('-1 day 10:30:00');
+
+        $marieSatisfactionParticipation = ParticipationFactory::createOne([
+            'token' => bin2hex(random_bytes(32)),
+            'isCompleted' => true,
+            'currentQuestion' => null,
+            'updatedAt' => $marieSatisfactionDate->modify('+3 minutes'),
+            'questionnaire' => $satisfactionQuestionnaire,
+            'respondent' => $userMarie,
+        ]);
+
+        $satisfactionChoice1 = $satisfactionStartQuestion->getChoices()->filter(
+            fn ($choice) => 'Satisfait' === $choice->getLabel()
+        )->first();
+
+        ParticipationAnswerFactory::createOne([
+            'participation' => $marieSatisfactionParticipation,
+            'choice' => $satisfactionChoice1,
+            'question' => $satisfactionStartQuestion,
+            'answeredAt' => $marieSatisfactionDate,
+        ]);
+
+        $recommendationQuestion = $satisfactionChoice1->getTargetQuestion();
+        if ($recommendationQuestion) {
+            $satisfactionChoice2 = $recommendationQuestion->getChoices()->filter(
+                fn ($choice) => 'Oui, certainement' === $choice->getLabel()
+            )->first();
+
+            if ($satisfactionChoice2) {
+                ParticipationAnswerFactory::createOne([
+                    'participation' => $marieSatisfactionParticipation,
+                    'choice' => $satisfactionChoice2,
+                    'question' => $recommendationQuestion,
+                    'answeredAt' => $marieSatisfactionDate->modify('+1 minute 30 seconds'),
+                ]);
+            }
+        }
+
+        $discoveryStartQuestion = $discoveryQuestionnaire->getStartQuestion();
+        $marieDiscoveryDate = new \DateTimeImmutable('-2 hours');
+
+        $marieDiscoveryParticipation = ParticipationFactory::createOne([
+            'token' => bin2hex(random_bytes(32)),
+            'isCompleted' => false,
+            'currentQuestion' => $discoveryStartQuestion->getChoices()->first()->getTargetQuestion(),
+            'updatedAt' => $marieDiscoveryDate->modify('+1 minute'),
+            'questionnaire' => $discoveryQuestionnaire,
+            'respondent' => $userMarie,
+        ]);
+
+        $discoveryChoice1 = $discoveryStartQuestion->getChoices()->filter(
+            fn ($choice) => 'J\'ai 18 ans ou plus' === $choice->getLabel()
+        )->first();
+
+        ParticipationAnswerFactory::createOne([
+            'participation' => $marieDiscoveryParticipation,
+            'choice' => $discoveryChoice1,
+            'question' => $discoveryStartQuestion,
+            'answeredAt' => $marieDiscoveryDate,
         ]);
     }
 }

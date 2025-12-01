@@ -136,6 +136,8 @@ docker compose up -d
 
 > 💡 Les certificats HTTPS sont générés automatiquement par Caddy.
 
+> ⚠️ **Au premier lancement**, ouvrez d'abord l'URL de l'API (https://api.localhost:8443) pour accepter le certificat, puis ouvrez l'application (https://app.localhost:8443).
+
 ---
 
 ### 🔧 Option B : Installation manuelle

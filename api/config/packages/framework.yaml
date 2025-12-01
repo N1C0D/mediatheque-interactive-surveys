@@ -3,7 +3,14 @@ framework:
     secret: '%env(APP_SECRET)%'
 
     # Note that the session will be started ONLY if you read or write from it.
-    session: true
+    session:
+        handler_id: null
+        cookie_secure: true
+        cookie_samesite: none
+
+    serializer:
+        default_context:
+            enable_max_depth: true
 
     #esi: true
     #fragments: true

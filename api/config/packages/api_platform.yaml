@@ -2,6 +2,9 @@ api_platform:
     title: Hello API Platform
     version: 1.0.0
     defaults:
-        stateless: true
+        stateless: false
         cache_headers:
             vary: ['Content-Type', 'Authorization', 'Origin']
+    eager_loading:
+        max_joins: 100
+        force_eager: false

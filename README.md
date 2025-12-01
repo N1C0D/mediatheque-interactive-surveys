@@ -95,10 +95,13 @@ Réalisé dans le cadre du **test technique pour le Département de la Marne**.
 
 ---
 
-## 🚀 Installation pas-à-pas
+## 🚀 Installation
 
 ### Prérequis
 
+- **Docker** et **Docker Compose** (recommandé)
+
+*Ou pour une installation manuelle :*
 - **PHP 8.2+** avec extensions : `pdo_pgsql`, `intl`, `mbstring`
 - **Composer 2.x**
 - **Node.js 18+** et **npm**
@@ -112,7 +115,33 @@ git clone https://github.com/N1C0D/mediatheque-interactive-surveys.git
 cd mediatheque-interactive-surveys
 ```
 
-### 2. Configurer l'environnement
+---
+
+### 🐳 Option A : Avec Docker (recommandé)
+
+La méthode la plus simple pour démarrer l'ensemble du projet (API, Frontend, Base de données, Reverse proxy).
+
+```bash
+# Lancer tous les services
+docker compose up -d
+
+# Initialiser la base de données (première fois uniquement)
+docker compose exec api composer db
+```
+
+| Service | URL |
+|---------|-----|
+| Application | **https://app.localhost:8443** |
+| API | **https://api.localhost:8443** |
+| Adminer (DB) | **http://localhost:8443** (via Caddy) |
+
+> 💡 Les certificats HTTPS sont générés automatiquement par Caddy.
+
+---
+
+### 🔧 Option B : Installation manuelle
+
+#### 1. Configurer l'environnement
 
 ```bash
 # Copier le fichier d'exemple
@@ -127,7 +156,7 @@ nano .env
 DATABASE_URL="postgresql://app:password@127.0.0.1:5432/app?serverVersion=16"
 ```
 
-### 3. Installer le Backend (API)
+#### 2. Installer le Backend (API)
 
 ```bash
 cd api
@@ -144,7 +173,7 @@ composer start
 
 L'API est accessible sur **https://127.0.0.1:8000**
 
-### 4. Installer le Frontend
+#### 3. Installer le Frontend
 
 ```bash
 cd ../frontend
@@ -158,7 +187,9 @@ npm run dev
 
 L'application est accessible sur **http://localhost:3000**
 
-### 5. Comptes de test
+---
+
+### Comptes de test
 
 | Email | Mot de passe | Rôle |
 |-------|--------------|------|

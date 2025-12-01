@@ -124,16 +124,15 @@ La méthode la plus simple pour démarrer l'ensemble du projet (API, Frontend, B
 ```bash
 # Lancer tous les services
 docker compose up -d
-
-# Initialiser la base de données (première fois uniquement)
-docker compose exec api composer db
 ```
+
+> 💡 La base de données est automatiquement initialisée au premier démarrage (migrations + fixtures).
 
 | Service | URL |
 |---------|-----|
 | Application | **https://app.localhost:8443** |
 | API | **https://api.localhost:8443** |
-| Adminer (DB) | **http://localhost:8443** (via Caddy) |
+| Adminer (DB) | **https://adminer.localhost:8443** |
 
 > 💡 Les certificats HTTPS sont générés automatiquement par Caddy.
 

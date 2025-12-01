@@ -169,6 +169,8 @@ public/media/
 | Pas de tests automatisés | Régression possible | Haute |
 | Session non distribuée | Impossible de load-balancer | Moyenne |
 
+> ⚠️ **Note importante :** Par manque de temps, les batteries de tests (unitaires et intégration) n'ont pas été réalisées. C'est une priorité haute pour garantir la qualité et éviter les régressions. L'infrastructure de test est en place (PHPUnit côté API, Jest côté frontend) mais les tests restent à écrire.
+
 ### 3.2 Limites fonctionnelles
 
 | Limite | Description |

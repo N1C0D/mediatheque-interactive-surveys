@@ -19,8 +19,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 #[ORM\Entity(repositoryClass: QuestionnaireRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 #[ApiResource(
     operations: [
         new GetCollection(),
@@ -51,6 +53,7 @@ class Questionnaire
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[Groups(['questionnaire:read', 'questionnaire:write'])]
+    #[MaxDepth(1)]
     private ?Question $startQuestion = null;
 
     /**
@@ -64,6 +67,7 @@ class Questionnaire
      */
     #[ORM\OneToMany(targetEntity: Question::class, mappedBy: 'questionnaire', orphanRemoval: true)]
     #[Groups(['questionnaire:read'])]
+    #[MaxDepth(2)]
     private Collection $questions;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -191,5 +195,13 @@ class Questionnaire
         $this->createdAt = $createdAt;
 
         return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function initializeCreatedAt(): void
+    {
+        if (null === $this->createdAt) {
+            $this->createdAt = new \DateTimeImmutable();
+        }
     }
 }

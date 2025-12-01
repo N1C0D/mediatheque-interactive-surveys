@@ -14,6 +14,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Repository\ParticipationRepository;
+use App\State\ParticipationProcessor;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -22,18 +23,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: ParticipationRepository::class)]
 #[ApiResource(
     operations: [
-        new GetCollection(
-            security: "is_granted('ROLE_USER') or is_granted('ROLE_ADMIN')"
-        ),
-        new Get(
-            security: "is_granted('ROLE_ADMIN') or (is_granted('ROLE_USER') and object.getUser() == user) or object.getSessionId() == null"
-        ),
-        new Post(),
-        new Patch(
-            security: "is_granted('ROLE_ADMIN') or (is_granted('ROLE_USER') and object.getUser() == user) or object.getSessionId() == null"
-        ),
+        new GetCollection(),
+        new Get(),
+        new Post(processor: ParticipationProcessor::class),
+        new Patch(processor: ParticipationProcessor::class),
         new Delete(
-            security: "is_granted('ROLE_ADMIN') or (is_granted('ROLE_USER') and object.getUser() == user)"
+            security: "is_granted('ROLE_ADMIN') or (is_granted('ROLE_USER') and object.getRespondent() == user)"
         ),
     ],
     normalizationContext: ['groups' => ['participation:read']],

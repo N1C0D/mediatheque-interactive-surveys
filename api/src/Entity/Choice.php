@@ -15,6 +15,7 @@ use ApiPlatform\Metadata\Put;
 use App\Repository\ChoiceRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 #[ORM\Entity(repositoryClass: ChoiceRepository::class)]
 #[ApiResource(
@@ -46,11 +47,13 @@ class Choice
     #[ORM\ManyToOne(inversedBy: 'choices')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['choice:read', 'choice:write'])]
+    #[MaxDepth(1)]
     private ?Question $question = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[Groups(['choice:read', 'choice:write', 'question:read', 'questionnaire:read', 'participation:read'])]
+    #[MaxDepth(1)]
     private ?Question $targetQuestion = null;
 
     public function getId(): ?int

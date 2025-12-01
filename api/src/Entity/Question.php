@@ -18,6 +18,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 #[ORM\Entity(repositoryClass: QuestionRepository::class)]
 #[ApiResource(
@@ -59,11 +60,13 @@ class Question
      */
     #[ORM\OneToMany(targetEntity: Choice::class, mappedBy: 'question', cascade: ['persist'], orphanRemoval: true)]
     #[Groups(['question:read', 'questionnaire:read', 'participation:read'])]
+    #[MaxDepth(1)]
     private Collection $choices;
 
     #[ORM\ManyToOne(inversedBy: 'questions')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['question:read', 'question:write'])]
+    #[MaxDepth(1)]
     private ?Questionnaire $questionnaire = null;
 
     public function __construct()

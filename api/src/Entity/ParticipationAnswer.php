@@ -11,6 +11,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use App\Repository\ParticipationAnswerRepository;
+use App\State\ParticipationAnswerProcessor;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -23,7 +24,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Get(
             security: "is_granted('ROLE_ADMIN')"
         ),
-        new Post(),
+        new Post(processor: ParticipationAnswerProcessor::class),
     ],
     normalizationContext: ['groups' => ['participationAnswer:read']],
     denormalizationContext: ['groups' => ['participationAnswer:write']],

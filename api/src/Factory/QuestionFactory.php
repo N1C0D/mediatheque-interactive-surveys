@@ -35,10 +35,10 @@ final class QuestionFactory extends PersistentObjectFactory
         $mediaType = null;
 
         if ('image' === $mediaChoice) {
-            $mediaFilename = 'placeholder-image.jpg';
+            $mediaFilename = 'images/placeholder-image.jpg';
             $mediaType = 'image';
         } elseif ('video' === $mediaChoice) {
-            $mediaFilename = 'placeholder-video.mp4';
+            $mediaFilename = 'videos/placeholder-video.mp4';
             $mediaType = 'video';
         }
 

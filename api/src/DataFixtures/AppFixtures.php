@@ -40,21 +40,21 @@ class AppFixtures extends Fixture
 
         $endJeuneA = QuestionFactory::createOne([
             'content' => 'Super ! Rejoignez notre club de lecture "Junior" le mercredi à 14h. Inscription à l\'accueil.',
-            'mediaFilename' => 'placeholder-image.jpg',
+            'mediaFilename' => 'images/placeholder-image.jpg',
             'mediaType' => 'image',
             'questionnaire' => $questionnaire,
         ]);
 
         $endJeuneB = QuestionFactory::createOne([
             'content' => 'Pas de souci ! Découvrez notre ludothèque jeux vidéo au 2ème étage, ouverte tous les jours.',
-            'mediaFilename' => 'placeholder-image.jpg',
+            'mediaFilename' => 'images/placeholder-image.jpg',
             'mediaType' => 'image',
             'questionnaire' => $questionnaire,
         ]);
 
         $endAdulteA = QuestionFactory::createOne([
             'content' => 'Nous avons un atelier CV tous les mardis matin de 9h à 12h. Rendez-vous au service emploi.',
-            'mediaFilename' => 'placeholder-video.mp4',
+            'mediaFilename' => 'videos/placeholder-video.mp4',
             'mediaType' => 'video',
             'questionnaire' => $questionnaire,
         ]);
@@ -66,14 +66,14 @@ class AppFixtures extends Fixture
 
         $endAdulteC = QuestionFactory::createOne([
             'content' => 'Découvrez nos ressources numériques gratuites : journaux, magazines, formations en ligne.',
-            'mediaFilename' => 'placeholder-image.jpg',
+            'mediaFilename' => 'images/placeholder-image.jpg',
             'mediaType' => 'image',
             'questionnaire' => $questionnaire,
         ]);
 
         $qJeune = QuestionFactory::createOne([
             'content' => 'Aimes-tu lire des livres ?',
-            'mediaFilename' => 'placeholder-image.jpg',
+            'mediaFilename' => 'images/placeholder-image.jpg',
             'mediaType' => 'image',
             'questionnaire' => $questionnaire,
         ]);
@@ -112,7 +112,7 @@ class AppFixtures extends Fixture
 
         $qStart = QuestionFactory::createOne([
             'content' => 'Bonjour ! Pour commencer, quel est votre âge ?',
-            'mediaFilename' => 'placeholder-video.mp4',
+            'mediaFilename' => 'videos/placeholder-video.mp4',
             'mediaType' => 'video',
             'questionnaire' => $questionnaire,
         ]);
@@ -143,7 +143,7 @@ class AppFixtures extends Fixture
 
         $endTresSatisfait = QuestionFactory::createOne([
             'content' => 'Merci beaucoup ! Nous sommes ravis que vous soyez satisfait. À bientôt !',
-            'mediaFilename' => 'placeholder-image.jpg',
+            'mediaFilename' => 'images/placeholder-image.jpg',
             'mediaType' => 'image',
             'questionnaire' => $questionnaire,
         ]);
@@ -181,7 +181,7 @@ class AppFixtures extends Fixture
 
         $qSatisfaction = QuestionFactory::createOne([
             'content' => 'Comment évaluez-vous votre visite aujourd\'hui ?',
-            'mediaFilename' => 'placeholder-image.jpg',
+            'mediaFilename' => 'images/placeholder-image.jpg',
             'mediaType' => 'image',
             'questionnaire' => $questionnaire,
         ]);
@@ -222,7 +222,7 @@ class AppFixtures extends Fixture
 
         $endBravo = QuestionFactory::createOne([
             'content' => 'Bravo ! Vous êtes un expert ! Découvrez notre section Histoire au 1er étage.',
-            'mediaFilename' => 'placeholder-video.mp4',
+            'mediaFilename' => 'videos/placeholder-video.mp4',
             'mediaType' => 'video',
             'questionnaire' => $questionnaire,
         ]);
@@ -234,14 +234,14 @@ class AppFixtures extends Fixture
 
         $endDommage = QuestionFactory::createOne([
             'content' => 'Dommage ! Mais ne vous découragez pas, nous avons plein de livres pour apprendre.',
-            'mediaFilename' => 'placeholder-image.jpg',
+            'mediaFilename' => 'images/placeholder-image.jpg',
             'mediaType' => 'image',
             'questionnaire' => $questionnaire,
         ]);
 
         $qCulture2 = QuestionFactory::createOne([
             'content' => 'En quelle année a eu lieu la Révolution française ?',
-            'mediaFilename' => 'placeholder-image.jpg',
+            'mediaFilename' => 'images/placeholder-image.jpg',
             'mediaType' => 'image',
             'questionnaire' => $questionnaire,
         ]);
@@ -264,7 +264,7 @@ class AppFixtures extends Fixture
 
         $qCulture1 = QuestionFactory::createOne([
             'content' => 'Qui a écrit "Les Misérables" ?',
-            'mediaFilename' => 'placeholder-video.mp4',
+            'mediaFilename' => 'videos/placeholder-video.mp4',
             'mediaType' => 'video',
             'questionnaire' => $questionnaire,
         ]);
@@ -300,14 +300,14 @@ class AppFixtures extends Fixture
 
         $endEspaceEnfant = QuestionFactory::createOne([
             'content' => 'Direction l\'espace enfants ! Rez-de-chaussée, à gauche après l\'entrée.',
-            'mediaFilename' => 'placeholder-image.jpg',
+            'mediaFilename' => 'images/placeholder-image.jpg',
             'mediaType' => 'image',
             'questionnaire' => $questionnaire,
         ]);
 
         $endEspaceAdo = QuestionFactory::createOne([
             'content' => 'Rendez-vous à l\'espace ados, 1er étage. Mangas, BD, et bien plus !',
-            'mediaFilename' => 'placeholder-image.jpg',
+            'mediaFilename' => 'images/placeholder-image.jpg',
             'mediaType' => 'image',
             'questionnaire' => $questionnaire,
         ]);
@@ -319,7 +319,7 @@ class AppFixtures extends Fixture
 
         $endMultimedia = QuestionFactory::createOne([
             'content' => 'L\'espace multimédia vous attend ! Ordinateurs, tablettes, impression disponibles.',
-            'mediaFilename' => 'placeholder-video.mp4',
+            'mediaFilename' => 'videos/placeholder-video.mp4',
             'mediaType' => 'video',
             'questionnaire' => $questionnaire,
         ]);
@@ -368,7 +368,7 @@ class AppFixtures extends Fixture
 
         $qServiceStart = QuestionFactory::createOne([
             'content' => 'Bienvenue ! Vous cherchez un espace pour...',
-            'mediaFilename' => 'placeholder-image.jpg',
+            'mediaFilename' => 'images/placeholder-image.jpg',
             'mediaType' => 'image',
             'questionnaire' => $questionnaire,
         ]);

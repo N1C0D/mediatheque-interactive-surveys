@@ -32,7 +32,7 @@ final class UserFactory extends PersistentObjectFactory
         return [
             'email' => self::faker()->safeEmail(),
             'password' => password_hash('password', PASSWORD_BCRYPT),
-            'roles' => [],
+            'roles' => ['ROLE_USER'],
         ];
     }
 

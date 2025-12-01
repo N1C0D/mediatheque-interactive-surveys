@@ -4,10 +4,18 @@ const nextConfig: NextConfig = {
     images: {
         remotePatterns: [
             {
+                // Local development
                 protocol: 'https',
-                hostname: 'localhost',
-                port: '',
-                pathname: '/uploads/**',
+                hostname: '127.0.0.1',
+                port: '8000',
+                pathname: '/media/**',
+            },
+            {
+                // Docker Compose
+                protocol: 'https',
+                hostname: 'api.localhost',
+                port: '8443',
+                pathname: '/media/**',
             },
         ],
     },

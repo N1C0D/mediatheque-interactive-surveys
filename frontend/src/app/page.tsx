@@ -1,66 +1,44 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import Link from 'next/link';
+import styles from './page.module.css';
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
+    <div className={styles.container}>
+      <section className={styles.hero}>
+        <h1 className={styles.title}>
+          Bienvenue à la <span className={styles.highlight}>Médiathèque</span>
+        </h1>
+        <p className={styles.subtitle}>
+          Découvrez nos questionnaires interactifs pour mieux vous orienter, 
+          partager vos avis ou simplement apprendre en vous amusant !
+        </p>
         <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          <Link href="/questionnaires" className={styles.primaryCta}>
+            Voir les questionnaires
+          </Link>
+          <Link href="/register" className={styles.secondaryCta}>
+            Créer un compte
+          </Link>
         </div>
-      </main>
+      </section>
+
+      <section className={styles.features}>
+        <div className={styles.feature}>
+          <div className={styles.featureIcon}>📋</div>
+          <h3>Questionnaires interactifs</h3>
+          <p>Répondez à des questionnaires personnalisés qui s'adaptent à vos choix</p>
+        </div>
+        <div className={styles.feature}>
+          <div className={styles.featureIcon}>💾</div>
+          <h3>Sauvegarde automatique</h3>
+          <p>Reprenez votre questionnaire là où vous l'avez laissé</p>
+        </div>
+        <div className={styles.feature}>
+          <div className={styles.featureIcon}>🎯</div>
+          <h3>Parcours personnalisés</h3>
+          <p>Chaque réponse vous guide vers un contenu adapté</p>
+        </div>
+      </section>
     </div>
   );
 }
